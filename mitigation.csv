@@ -1,5 +1,0 @@
-Dataset,Attribute,Model,Accuracy,Recall,EO diff,Min group recall
-OULAD,imd_tercile,Unmitigated RF,0.727,0.676,0.296,0.453
-OULAD,imd_tercile,ThresholdOptimizer (EO),0.715,0.761,0.149,0.625
-Student Performance,mother_edu,Unmitigated RF,0.799,0.63,0.158,0.588
-Student Performance,mother_edu,ThresholdOptimizer (EO),0.78,0.587,0.095,0.552

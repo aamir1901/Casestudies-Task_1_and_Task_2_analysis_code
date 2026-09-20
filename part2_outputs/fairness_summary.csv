@@ -1,0 +1,10 @@
+Dataset,Attribute,Groups,Recall gap (max-min),FPR gap,Recall ratio (min/max),Demographic parity diff,Equalised odds diff
+OULAD (week-4 RF),gender,2,0.058,0.025,0.917,0.053,0.058
+OULAD (week-4 RF),disability,2,0.105,0.12,0.862,0.156,0.12
+OULAD (week-4 RF),age_band,3,0.229,0.154,0.673,0.257,0.229
+OULAD (week-4 RF),imd_tercile,4,0.271,0.204,0.632,0.347,0.271
+OULAD (week-4 RF),highest_education,5,0.238,0.224,0.685,0.356,0.238
+Student Performance (RF),sex,2,0.048,0.02,0.912,0.003,0.048
+Student Performance (RF),address,2,0.049,0.098,0.913,0.111,0.098
+Student Performance (RF),school,2,0.117,0.112,0.805,0.159,0.117
+Student Performance (RF),mother_edu,2,0.17,0.125,0.717,0.157,0.17

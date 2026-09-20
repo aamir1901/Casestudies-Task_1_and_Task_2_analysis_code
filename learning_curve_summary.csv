@@ -1,7 +1,0 @@
-Dataset,Model,Val AUC @smallest,Val AUC @full,Val recall @smallest,Val recall @full,Train-val AUC gap @full
-OULAD (week-4 features),Random forest,0.786,0.801,0.659,0.67,0.104
-OULAD (week-4 features),Neural network (MLP),0.769,0.802,0.716,0.692,0.009
-OULAD (full-module features),Random forest,0.931,0.944,0.824,0.828,0.035
-OULAD (full-module features),Neural network (MLP),0.929,0.945,0.865,0.852,0.005
-Student Performance,Random forest,0.624,0.808,0.143,0.526,0.172
-Student Performance,Neural network (MLP),0.465,0.758,0.261,0.23,0.087

@@ -1,57 +1,70 @@
-# Case Studies in Data Science — Individual Task 1, Part 1.3
+# COSC2669 Case Studies in Data Science
 
-Predicting at-risk students across two public education datasets, using a random
-forest and an MLP neural network. Supports the analysis reported in Section 3 of
-the submitted report.
+Amir Munawar Wangde (s4186051), RMIT University
 
-## Datasets
+Analysis code for Individual Task 1 and Individual Task 2. Both tasks predict
+at-risk students from learning analytics data, framed around a Data Scientist
+role at the Australian Council for Educational Research (ACER).
 
-Not included in this repository — download from UCI and place the CSVs in `data/`:
+## Task 1 — Part 1.3 analysis
+
+`Task1_Part1_3_Analysis.ipynb`
+
+Binary at-risk classification on two datasets, using a random forest and a
+multilayer perceptron. Covers preprocessing, feature engineering from the VLE
+interaction log, model evaluation on a held-out test set, and feature
+importances (`fig_importance.pdf`).
+
+## Task 2 — Part 2 deliberation
+
+`Task2_Part2_Deliberation.ipynb`
+
+Re-examines the Task 1 analysis for evaluation soundness, learning behaviour
+and fairness. The models and preprocessing are unchanged, so every difference
+comes from the evaluation design. The notebook runs, in order:
+
+1. **Leakage audit** — students with repeated enrolments, students appearing in
+   both subject files, and engagement features counted after the outcome.
+2. **Cross-validation comparison** — single 80/20 split vs stratified 5-fold vs
+   stratified *group* 5-fold, plus a model restricted to week-four features.
+3. **Learning curves** — recall, F1 and ROC-AUC against training-set size,
+   computed from the same fits across five student-disjoint folds.
+4. **Fairness audit** — Fairlearn `MetricFrame` on out-of-fold predictions,
+   with recall, FPR and selection rate by sensitive group.
+5. **Sensitive-attribute removal** — retraining without them, to test whether
+   bias flows through proxies.
+6. **Mitigation** — `ThresholdOptimizer` under an equalised-odds constraint.
+
+### Outputs
+
+| File | Contents |
+|---|---|
+| `cv_comparison.csv` | Metrics under each evaluation design |
+| `learning_curves.csv` | Per-fold, per-size scores |
+| `learning_curve_summary.csv` | Validation scores at smallest and full size |
+| `fairness_summary.csv` | Disparity metrics by sensitive attribute |
+| `unawareness_test.csv` | Equalised-odds gaps with and without sensitive inputs |
+| `mitigation.csv` | Before and after `ThresholdOptimizer` |
+| `fig_learning_curves.pdf` | Learning curves |
+| `fig_fairness_oulad.pdf` | Group metrics, OULAD |
+| `fig_fairness_studperf.pdf` | Group metrics, Student Performance |
+
+## Data (not included)
+
+Both datasets are public and are not committed here, since the OULAD
+interaction log alone exceeds 10 million rows.
 
 - **OULAD** — https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset
-  (needs `studentInfo.csv`, `studentVle.csv`)
+  (`studentInfo.csv`, `studentVle.csv`)
 - **Student Performance** — https://archive.ics.uci.edu/dataset/320/student+performance
-  (needs `student-mat.csv`, `student-por.csv`)
+  (`student-mat.csv`, `student-por.csv`)
 
-```
-.
-├── Task1_Part1_3_Wangde.ipynb
-└── data/
-    ├── studentInfo.csv
-    ├── studentVle.csv
-    ├── student-mat.csv
-    └── student-por.csv
-```
+Place the CSVs next to the notebook, or set `DATA` in the setup cell to
+wherever they live.
 
-## Running
+## Requirements
 
-```bash
-pip install pandas scikit-learn matplotlib jupyter
-jupyter notebook Task1_Part1_3_Wangde.ipynb
-```
-
-Run the cells in order. Runtime is two to four minutes, almost all of it spent
-aggregating the 10.65 million-row VLE interaction log. A fixed random seed (42)
-makes every reported figure reproducible.
-
-## Results
-
-| Dataset | Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
-|---|---|---|---|---|---|---|
-| OULAD | Random forest | 0.880 | 0.928 | 0.837 | 0.880 | 0.947 |
-| OULAD | Neural network (MLP) | 0.881 | 0.906 | 0.864 | 0.884 | 0.947 |
-| Student Performance | Random forest | 0.785 | 0.511 | 0.522 | 0.516 | 0.826 |
-| Student Performance | Neural network (MLP) | 0.799 | 0.600 | 0.261 | 0.364 | 0.787 |
-
-Recall is reported for the at-risk class, which is the metric the comparison
-turns on: a false negative is a struggling student who is never offered support.
-
-## References
-
-Cortez, P. and Silva, A. (2008) *Using data mining to predict secondary school student performance*. Proceedings of the 5th Annual Future Business Technology Conference, Porto, 5–12.
-
-Kuzilek, J., Hlosta, M. and Zdrahal, Z. (2017) 'Open University Learning Analytics dataset', *Scientific Data*, 4, 170171. doi:10.1038/sdata.2017.171
-
-Page, D. (2007) *Evaluating machine learning methods*. Lecture slides, CS 760, University of Wisconsin–Madison.
-
-Pedregosa, F. et al. (2011) 'Scikit-learn: machine learning in Python', *Journal of Machine Learning Research*, 12, 2825–2830.
+Python 3.11+, with `pandas`, `numpy`, `scikit-learn`, `matplotlib` and
+`fairlearn`. The Task 2 notebook installs `fairlearn` on first run if it is
+missing. A full run takes roughly 15–30 minutes; set `FAST = True` in the setup
+cell for a quicker draft run with fewer trees and fewer training sizes.
